@@ -1,0 +1,6 @@
+fromversion: 6.10.0
+id: SamplePack
+name: SamplePack Modeling Rule
+rules: ''
+schema: ''
+tags: SamplePack

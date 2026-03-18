@@ -1,0 +1,18 @@
+{
+  "trigger_name": "SamplePack Alert Handler",
+  "trigger_id": "samplepack_example_trigger",
+  "playbook_id": "PLAYBOOK_ID_HERE",
+  "suggestion_reason": "Recommended for handling SamplePack alerts",
+  "description": "Triggers the SamplePack response playbook when matching alerts are detected.",
+  "alerts_filter": {
+    "filter": {
+      "AND": [
+        {
+          "SEARCH_FIELD": "alert_source",
+          "SEARCH_TYPE": "EQ",
+          "SEARCH_VALUE": "SamplePack"
+        }
+      ]
+    }
+  }
+}

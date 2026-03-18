@@ -1,0 +1,34 @@
+action: ALERTS
+alert_category: CREDENTIAL_ACCESS
+alert_description: Multiple failed login attempts detected from $xdm.source.ipv4 targeting $xdm.target.user.username which may indicate a brute force attack.
+alert_domain: DOMAIN_SECURITY
+alert_fields:
+  actor_effective_username: xdm.source.user.username
+  agent_hostname: xdm.source.host.hostname
+alert_name: SamplePack - Brute Force Attack Detected-Scheduled
+alert_type: null
+crontab: '*/10 * * * *'
+dataset: alerts
+description: Detects multiple failed authentication attempts from a single source using scheduled execution. Runs every 10 minutes with a 15 minute search window.
+drilldown_query_timeframe: ALERT
+execution_mode: SCHEDULED
+fromversion: 8.4.0
+global_rule_id: 8d4effd8-d2fd-433a-8d7a-f6dfb1c994b6
+investigation_query_link: dataset = samplepack_raw | filter user = $xdm.target.user.username
+is_enabled: true
+mapping_strategy: CUSTOM
+mitre_defs:
+  TA0006 - Credential Access:
+  - T1110 - Brute Force
+name: SamplePack - Multiple Failed Login Attempts-Scheduled
+search_window: 15 minutes
+severity: SEV_030_MEDIUM
+suppression_duration: 1 hours
+suppression_enabled: true
+suppression_fields:
+  - xdm.source.ipv4
+  - xdm.target.user.username
+xql_query: |
+  datamodel dataset = samplepack_raw
+  | filter xdm.event.type = "AUTHENTICATION" and xdm.event.outcome = "FAILED"
+  | fields xdm.event.type, xdm.event.outcome, xdm.source.ipv4, xdm.source.host.hostname, xdm.target.user.username, xdm.source.user.username

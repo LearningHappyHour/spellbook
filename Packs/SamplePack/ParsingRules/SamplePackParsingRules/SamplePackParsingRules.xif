@@ -1,0 +1,10 @@
+[INGEST:vendor="SamplePack", product="SamplePack", target_dataset="samplepack_raw", no_hit=keep]
+filter _raw_log ~= "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}"
+| alter
+    tmp_timestamp = arrayindex(regextract(_raw_log, "(\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z\d\.]*)"), 0),
+    hostname = arrayindex(regextract(_raw_log, "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z\d\.]*\s+(\S+)"), 0),
+    process_name = arrayindex(regextract(_raw_log, "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z\d\.]*\s+\S+\s+(\w+)"), 0),
+    message = arrayindex(regextract(_raw_log, "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}[Z\d\.]*\s+\S+\s+\w+[:\s]+(.*)$"), 0)
+| alter
+    _time = if(tmp_timestamp ~= "\.", parse_timestamp("%Y-%m-%dT%H:%M:%E3SZ", tmp_timestamp), parse_timestamp("%Y-%m-%dT%H:%M:%SZ", tmp_timestamp))
+| fields -tmp_timestamp;

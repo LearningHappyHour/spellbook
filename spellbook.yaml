@@ -1,0 +1,20 @@
+packs_directory: Packs
+artifacts_directory: artifacts
+defaults:
+  support: community
+  author: LHH
+  url: ''
+  email: ''
+  categories: []
+  tags: []
+  useCases: []
+  keywords: []
+  marketplaces:
+  - xsoar
+  - marketplacev2
+exclude_packs: []
+validation:
+  enabled: true
+  allow_warnings: true
+packaging:
+  create_zip: true
